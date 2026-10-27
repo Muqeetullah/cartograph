@@ -1,186 +1,223 @@
 <div align="center">
-  <br />
-    <a href="https://youtu.be/-AkIj8TG3Uc" target="_blank">
-      <img src="public/readme/readme-hero.webp" alt="Project Banner">
-    </a>
-  <br />
 
-  <div>
-    <img src="https://img.shields.io/badge/-Next.js_-black?style=for-the-badge&logo=nextdotjs&logoColor=white" />
-    <img src="https://img.shields.io/badge/-TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white" />
-    <img src="https://img.shields.io/badge/-Tailwind-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white" />
-    <br />
-    <img src="https://img.shields.io/badge/-Clerk-6C47FF?style=for-the-badge&logo=clerk&logoColor=white" />
-    <img src="https://img.shields.io/badge/-Supabase-3FCF8E?style=for-the-badge&logo=supabase&logoColor=white" />
-    <img src="https://img.shields.io/badge/-LangSmith-1C1C1C?style=for-the-badge&logo=langchain&logoColor=white" />
-    <img src="https://img.shields.io/badge/-CodeRabbit-FF6600?style=for-the-badge&logo=coderabbit&logoColor=white" />
-  </div>
+# Cartograph
 
-  <h3 align="center">Cartograph | AI-Powered Codebase Dependency Mapper</h3>
+### See the connections. Understand the code.
 
-  <div align="center">
-    Build this project step by step with our detailed tutorial on <a href="https://www.youtube.com/watch?v=XUkNR-JfHwo" target="_blank"><b>JavaScript Mastery</b></a> YouTube. Join the JSM family!
-  </div>
+An interactive workspace for exploring JavaScript and TypeScript repositories through real dependency maps, impact analysis, and free AI explanations.
+
+**Customized and maintained by [Muqeet Ullah Ghazi](https://github.com/Muqeetullah)**
+
+[Live website](https://cartograph-weld.vercel.app) · [Features](#features) · [Local setup](#local-setup) · [Deployment](#deployment) · [Credits](#credits)
+
 </div>
 
-## 📋 <a name="table">Table of Contents</a>
+![Cartograph workspace with repository analysis and workspace statistics](public/readme/cartograph-dashboard.png)
 
-1. ✨ [Introduction](#introduction)
-2. ⚙️ [Tech Stack](#tech-stack)
-3. 🔋 [Features](#features)
-4. 🤸 [Quick Start](#quick-start)
-5. 🔗 [Assets](#links)
-6. 🚀 [More](#more)
+## Overview
 
-## 🚨 Tutorial
+Cartograph turns a public GitHub repository into a map of its files and imports. Open folders, inspect modules, follow dependency chains, and see which files depend on the code you want to change.
 
-This repository contains the code corresponding to an in-depth tutorial available on our YouTube channel, <a href="https://www.youtube.com/@javascriptmastery/videos" target="_blank"><b>JavaScript Mastery</b></a>.
+The map comes from source-code parsing. AI explains the stored facts and can suggest a role for an unclassified file; it does not create the graph's nodes or edges.
 
-If you prefer visual learning, this is the perfect resource for you. Follow our tutorial to learn how to build projects like these step-by-step in a beginner-friendly manner!
+This version includes a redesigned responsive workspace, illustrated authentication pages, accessible map controls, and an OpenRouter integration restricted to a specific free coding model.
 
-<a href="https://youtu.be/-AkIj8TG3Uc" target="_blank"><img src="https://github.com/sujatagunale/EasyRead/assets/151519281/1736fca5-a031-4854-8c09-bc110e3bc16d" /></a>
+## Features
 
-## <a name="introduction">✨ Introduction</a>
+- **Repository mapping:** analyze public JavaScript and TypeScript repositories at a recorded commit.
+- **Interactive canvas:** expand folders, select files, filter by category, zoom, and fit the map to the screen.
+- **Impact analysis:** inspect imports, dependents, dependency chains, and a file's blast radius.
+- **Route discovery:** inspect routes recovered by the framework adapters, with omissions reported rather than guessed.
+- **Graph insights:** identify dependency cycles, heavily imported modules, long files, and files without importers.
+- **AI explanations:** request file and folder explanations using the parsed structure and source context.
+- **Cached answers:** reuse previous answers without another model request.
+- **Team workspaces:** sign in with Clerk and keep analyses scoped to the active organization through Supabase row-level security.
+- **Analysis progress:** follow repository fetching, file selection, parsing, and storage through Supabase Realtime.
+- **Responsive interface:** light and dark themes, mobile layouts, keyboard-accessible folder controls, and illustrated sign-in/sign-up cards with loading states.
 
-Cartograph is a developer tool that turns any public TypeScript or JavaScript repository into an interactive dependency map. Modern engineering teams frequently ship AI-generated code without fully reading every underlying file, creating complex architectural webs with hidden imports and coupled modules. Cartograph solves this by parsing raw source code into navigable nodes and edges, allowing developers to immediately visualize dependency chains, evaluate blast radii before making edits, and ask AI models for context-aware explanations grounded entirely in true AST parsing.
+## Built with
 
-Built around a strict core principle, Cartograph guarantees that every node and edge on the canvas comes directly from real code analysis rather than AI predictions. By keeping graph arithmetic pure and standalone, the AI agent is only permitted to explain and summarize verified structure. Packed with multi-tenant organization support via Clerk, row-level security on Supabase, and full observability tracing through LangSmith, Cartograph provides production-grade infrastructure for software teams navigating large codebases.
+| Layer | Technology |
+| --- | --- |
+| Application | Next.js 16 App Router, React 19, TypeScript 5 |
+| Styling | Tailwind CSS 4, Geist fonts |
+| Graph rendering | React Flow and Dagre |
+| Source analysis | ts-morph and the TypeScript compiler API |
+| Authentication | Clerk with Organizations |
+| Database and progress | Supabase Postgres, row-level security, Realtime |
+| AI | OpenRouter through the OpenAI-compatible SDK |
+| Optional tracing | LangSmith, disabled by default |
+| Hosting | Vercel Hobby |
 
-If you're getting started and need assistance or face any bugs, join our active Discord community with over **50k+** members. It's a place where people help each other out.
+Framework adapters include Next.js, React, Express, NestJS, Docusaurus, and a generic fallback. Exact route recovery depends on the framework and on paths being statically readable from the source.
 
-<a href="https://discord.com/invite/n6EdbFJ" target="_blank"><img src="https://github.com/sujatagunale/EasyRead/assets/151519281/618f4872-1e10-42da-8213-1d69e486d02e" /></a>
+## Local setup
 
-## <a name="tech-stack">⚙️ Tech Stack</a>
+### 1. Install prerequisites
 
-- **[Next.js 16](https://nextjs.org/)** is a full-stack React framework that powers Cartograph using the App Router, Server Actions, and dynamic server-rendering capabilities for seamless frontend-backend integration.
-
-- **[TypeScript 5](https://www.typescriptlang.org/)** is a strongly typed superset of JavaScript that ensures strict type safety across the entire application and parser pipeline.
-
-- **[ts-morph](https://ts-morph.com/)** is a wrapper around the TypeScript Compiler API that parses source code files, imports, re-exports, and dynamic references into deterministic AST graph structures.
-
-- **[React Flow (@xyflow/react)](https://reactflow.dev/)** is an interactive canvas library used alongside dagre for laying out, rendering, and navigating complex codebase dependency graphs.
-
-- **[Clerk](https://jsm.dev/carto-clerk)** provides identity management and multi-tenant organization authorization, issuing tokens that govern user access throughout the platform.
-
-- **[Supabase](https://jsm.dev/carto-supabase)** supplies the Postgres database layer with strict Row-Level Security (RLS) policies enforced directly via JWT claims.
-
-- **[OpenAI SDK](https://platform.openai.com/)** drives the AI explanation and agentic inspection capabilities, providing answers grounded strictly in parsed code structures.
-
-- **[LangSmith](https://jsm.dev/carto-langsmith)** is an observability platform that traces every LLM call, records dataset runs, and evaluates model responses against exact ground-truth code metrics.
-
-- **[Tailwind CSS v4](https://tailwindcss.com/)** is a utility-first CSS framework that powers Cartograph's dense, high-information developer interface.
-
-- **[CodeRabbit](https://jsm.dev/carto-coderabbit)** is an AI code reviewer that automatically analyzes PRs to enforce architectural rules and codebase consistency.
-
-## <a name="features">🔋 Features</a>
-
-👉 **AST Codebase Parsing**: Converts public GitHub repositories into complete node-and-edge graph maps by parsing imports, re-exports, dynamic imports, and `require()` calls without relying on AI predictions.
-
-👉 **Interactive Canvas Mapping**: Zoom, expand folders into individual files, select modules, and view connected incoming and outgoing dependencies rendered via React Flow.
-
-👉 **Blast Radius Calculation**: Instant arithmetic over the graph structure to reveal exactly which files and downstream modules break if a specific file is changed.
-
-👉 **Grounded Module Explanations**: Contextual summaries generated for any file using only its real AST connections, with every mentioned filename hyperlinked directly on the map.
-
-👉 **Agentic Repository Chat**: Interactive agent panel that walks verified graph paths step-by-step to answer architectural questions without inventing non-existent files or relationships.
-
-👉 **Multi-Tenant Organizations**: Shared codebase analyses linked to Clerk organizations so team members collaborate from a single unified map.
-
-👉 **Row-Level Postgres Security**: Automatic data isolation across teams using Supabase Postgres policies evaluated directly against Clerk JWT claims.
-
-👉 **LangSmith Trace & Evaluation**: Full tracing of every AI execution call, cache hit verification, and benchmark evaluation against true repository file lists.
-
-And many more, including code architecture and reusability.
-
-## <a name="quick-start">🤸 Quick Start</a>
-
-Follow these steps to set up the project locally on your machine.
-
-**Prerequisites**
-
-Make sure you have the following installed on your machine:
-
-- [Git](https://git-scm.com/)
-- [Node.js](https://nodejs.org/en)
-- [pnpm](https://pnpm.io/) (Package Manager)
-
-**Cloning the Repository**
+Use **Node.js 24.x**, **Git**, and **pnpm 10.32.1**, the package-manager version recorded in this repository. You will also need Clerk and Supabase projects. AI features need an OpenRouter API key.
 
 ```bash
-git clone https://github.com/adrianhajdin/cartograph.git
+git clone https://github.com/Muqeetullah/cartograph.git
 cd cartograph
+pnpm install --frozen-lockfile
+cp .env.example .env.local
 ```
 
-**Installation**
+The repository is private, so cloning requires access to the GitHub account or repository.
 
-Install the project dependencies using pnpm:
+### 2. Configure environment variables
 
-```bash
-pnpm install
-```
+Fill in `.env.local` with your own values:
 
-**Set Up Environment Variables**
-
-Create a new file named `.env.local` in the root of your project and add the following content:
-
-```env
-# CLERK
+```dotenv
+# Clerk
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
+CLERK_SECRET_KEY=your_clerk_secret_key
 NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in
 NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up
 NEXT_PUBLIC_CLERK_SIGN_IN_FALLBACK_REDIRECT_URL=/
 NEXT_PUBLIC_CLERK_SIGN_UP_FALLBACK_REDIRECT_URL=/
-NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=
-CLERK_SECRET_KEY=
 
-# SUPABASE
-NEXT_PUBLIC_SUPABASE_URL=
-NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=
-SUPABASE_SECRET_KEY=
+# Supabase
+NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=your_supabase_publishable_key
+SUPABASE_SECRET_KEY=your_supabase_secret_key
 
-# LANGSMITH
-LANGSMITH_TRACING=true
-LANGSMITH_API_KEY=
-LANGSMITH_PROJECT=cartograph
-LANGSMITH_ENDPOINT=https://api.smith.langchain.com
+# Free AI
+OPENROUTER_API_KEY=your_openrouter_key
 
-# OpenRouter (free models only)
-OPENROUTER_API_KEY=
-
-# Agent Service (deep-agent/, `pnpm dev` there).
-AGENT_URL=http://localhost:2024
+# Optional tracing remains off
+LANGSMITH_TRACING=false
 ```
 
-Replace the placeholder values with your real credentials. You can get these by signing up at: [**Clerk**](https://clerk.com/), [**Supabase**](https://supabase.com/), [**OpenAI**](https://platform.openai.com/), and [**LangSmith**](https://smith.langchain.com/).
+Keep secret keys on the server. `.env.local` and other local environment files are excluded from Git and deployment uploads. Variables beginning with `NEXT_PUBLIC_` are intended for the browser.
 
-**Running the Project**
+The legacy `AGENT_URL` entry in `.env.example` is not used by the included application. No separate agent service is required.
+
+### 3. Configure Clerk and Supabase
+
+1. Enable **Organizations** in Clerk.
+2. Activate Clerk's **Supabase integration**.
+3. In Supabase's **Authentication → Sign In / Providers → Third-Party Auth**, add the matching Clerk issuer URL.
+4. In Clerk's session-token customization, add the organization name claim, preserving the integration's managed authentication role:
+
+   ```json
+   {
+     "org_name": "{{org.name}}"
+   }
+   ```
+
+5. Apply the eight SQL files in `supabase/migrations/` in filename order to a fresh Supabase database. They create the tables, policies, functions, and progress broadcasts required by the app. Use your database migration tooling or the SQL editor; do not rerun the full sequence against an already migrated database.
+
+The database policies use the organization ID in the Clerk token. Supplying API keys alone does not configure this authentication connection or create the database schema.
+
+### 4. Start the app
 
 ```bash
-pnpm dev
+pnpm dev --hostname localhost
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser to view the project.
+Open [localhost:3000](http://localhost:3000), sign up or sign in, and paste a public GitHub repository URL into **Map a repository**.
 
-## <a name="links">🔗 Assets</a>
+For a local production build:
 
-Assets and snippets used in the project can be found in the **[video kit](https://jsm.dev/carto-kit)**.
+```bash
+pnpm build
+pnpm start --hostname localhost
+```
 
-<a href="https://jsm.dev/carto-kit" target="_blank">
-  <img src="public/readme/readme-videokit.webp" alt="Video Kit Banner">
-</a>
+## Free AI configuration
 
-## <a name="more">🚀 More</a>
+Both explanation and classification currently use:
 
-**Advance your skills with our Pro Course**
+```text
+poolside/laguna-s-2.1:free
+```
 
-Enjoyed creating this project? Dive deeper into our PRO courses for a richer learning adventure. They're packed with
-detailed explanations, cool features, and exercises to boost your skills. Give it a go!
+The model selection and request boundary live in `lib/ai/client.ts`:
 
-<a href="https://jsm.dev/ai" target="_blank">
-  <img src="public/readme/readme-jsmpro.webp" alt="Project Banner">
-</a>
+- Only configured model IDs are accepted.
+- OpenRouter provider prompt and completion prices are capped at zero.
+- There is no paid fallback.
+- Requests time out after 45 seconds and do not retry automatically.
+- Free-provider rate limits are reported to the user.
+- Cache keys include the model and prompt version, preventing old answers from being reused after those change.
 
-## Local free model setup
+The OpenAI-compatible SDK is only the API client; an OpenAI API key is not required. LangSmith tracing is optional and is off in this deployment.
 
-AI explanations and classification use `poolside/laguna-s-2.1:free` at `https://openrouter.ai/api/v1`. There is no paid fallback. Every request also restricts provider token pricing to zero and times out after 45 seconds. Set `OPENROUTER_API_KEY` in `.env.local`. Free request limits apply. LangSmith tracing is disabled for this local setup.
+Free-model availability and service quotas can change. If the configured endpoint is unavailable, update the code to another suitable free model after checking its capabilities. AI explanations can still contain mistakes or speculation; the parsed graph remains the source of structural facts.
 
-Start the installed app with `npm run dev -- --hostname localhost`, then open http://localhost:3000. Supabase migrations were applied to the configured project, with row level security enabled on all nine application tables.
+## Checks and development tools
+
+```bash
+pnpm test     # AI request-boundary and caching regression tests, with a mocked provider
+pnpm lint     # ESLint
+pnpm build    # Production build and TypeScript checking
+```
+
+The automated tests do not make live AI requests or consume API credits.
+
+The parser and graph checks can also run without authentication or AI credentials:
+
+```bash
+pnpm parse . --out /tmp/cartograph-analysis.json
+pnpm map-counts /tmp/cartograph-analysis.json
+pnpm insights /tmp/cartograph-analysis.json
+```
+
+To run the database-backed analysis pipeline from the command line:
+
+```bash
+pnpm analyze https://github.com/owner/repository --org YOUR_CLERK_ORGANIZATION_ID
+```
+
+That last command uses the configured database and writes an analysis to the specified organization.
+
+## Deployment
+
+**Live application:** [cartograph-weld.vercel.app](https://cartograph-weld.vercel.app)
+
+The project is connected to this GitHub repository and deployed in the `muqeetullahs-projects` Vercel workspace. The production branch is `main`.
+
+For a separate deployment:
+
+1. Import your copy of the repository into Vercel.
+2. Select the **Next.js** framework preset and Node.js **24.x**.
+3. Add the variables from the setup section to the Vercel project before deploying.
+4. Use the committed `vercel.json` configuration for installation and building.
+5. Verify the sign-in/sign-up routes and the Clerk–Supabase connection on the deployed domain.
+
+The current deployment uses Vercel's **Hobby** plan. Repository parsing and post-response work are configured within its 300-second function duration limit. Large repositories can exceed free runtime, memory, or service quotas. The app downloads public repository archives without a GitHub token, so GitHub's unauthenticated limits also apply.
+
+Clerk currently uses development-instance keys, and its **Development mode** label remains visible. This repository does not purchase domains, enable paid plans, or upgrade providers automatically.
+
+## Project structure
+
+```text
+app/                  Pages, layouts, authentication routes, server actions
+components/           Dashboard, auth cards, map, details, progress controls
+lib/ai/               Free model client, prompts, caching-aware AI tasks
+lib/analysis/         Stored graph loading and explanation context
+lib/graph/            Folding, reachability, highlighting, graph insights
+lib/parser/           Source walking, import resolution, framework adapters
+lib/pipeline/         GitHub archive retrieval and analysis persistence
+lib/supabase/         Server, browser, and admin database clients
+public/images/        Custom authentication illustration
+scripts/              Parser, graph, and pipeline command-line tools
+supabase/migrations/  Database schema, security policies, progress functions
+tests/                Automated regression tests
+```
+
+## Authentication preview
+
+![Illustrated Cartograph sign-in page with a themed authentication card](public/readme/cartograph-auth.png)
+
+## Credits
+
+**Muqeet Ullah Ghazi** — customization and maintenance of this version, including the refreshed workspace interface, illustrated authentication experience, free-model integration, testing improvements, and deployment.
+
+- GitHub: [@Muqeetullah](https://github.com/Muqeetullah)
+- Project: [Muqeetullah/cartograph](https://github.com/Muqeetullah/cartograph)
+
+This version builds on the original [Cartograph project by Adrian Hajdin / JavaScript Mastery](https://github.com/adrianhajdin/cartograph). Credit for that original foundation remains with its authors.
