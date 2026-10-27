@@ -1,0 +1,126 @@
+@import "tailwindcss";
+
+/*
+ * data-theme on <html> is system | light | dark. color-scheme decides which
+ * side of every light-dark() pair applies, so a forced theme beats the OS
+ * preference without a second copy of the palette.
+ */
+:root {
+  color-scheme: light dark;
+
+  --canvas: light-dark(#f7f8fc, #0c0e14);
+  --surface: light-dark(#ffffff, #12151e);
+  --raised: light-dark(#f0f2f9, #1b2030);
+  --line: light-dark(#e3e6ef, #272d3c);
+  --fg: light-dark(#202638, #e7eaf3);
+  --fg-muted: light-dark(#647087, #969fb4);
+  --accent: light-dark(#5865dc, #9ba7ff);
+  --accent-fg: light-dark(#ffffff, #12162a);
+
+  /* Direction: into a file, out of a file. */
+  --incoming: light-dark(#15803d, #4ade80);
+  --outgoing: light-dark(#b45309, #fbbf24);
+
+  /* File kinds. Kept clear of the accent blue and the two direction hues. */
+  --kind-1: light-dark(#7c3aed, #a78bfa);
+  --kind-2: light-dark(#c026d3, #e879f9);
+  --kind-3: light-dark(#e11d48, #fb7185);
+  --kind-4: light-dark(#0891b2, #22d3ee);
+
+  --edge: light-dark(#a1a1aa, #52525b);
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-raised: var(--raised);
+  --color-line: var(--line);
+  --color-fg: var(--fg);
+  --color-fg-muted: var(--fg-muted);
+  --color-accent: var(--accent);
+  --color-accent-fg: var(--accent-fg);
+  --color-incoming: var(--incoming);
+  --color-outgoing: var(--outgoing);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+html {
+  font-size: 16px;
+}
+
+body {
+  background: var(--canvas);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* React Flow's base stylesheet leaves edges unstyled; they're greyscale until
+   a selection gives them a direction. */
+.react-flow__edge-path {
+  stroke: var(--edge);
+  fill: none;
+}
+
+::selection { background: color-mix(in srgb, var(--accent) 25%, transparent); }
+button, a, input { -webkit-tap-highlight-color: transparent; }
+button:not(:disabled), a { touch-action: manipulation; }
+button:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+* { scrollbar-width: thin; scrollbar-color: var(--line) transparent; }
+.workspace-map { background-image: radial-gradient(var(--line) 1px, transparent 1px); background-size: 20px 20px; }
+.analysis-table tbody tr:last-child { border-bottom: 0; }
+@media (prefers-reduced-motion: no-preference) {
+  button, a, input { transition: background-color 140ms, border-color 140ms, color 140ms, box-shadow 140ms; }
+}
+
+:root {
+  --cartograph-auth-accent-fg: var(--accent-fg);
+  --cartograph-auth-fg-muted: var(--fg-muted);
+  --cartograph-auth-accent: var(--accent);
+  --cartograph-auth-surface: var(--surface);
+  --cartograph-auth-canvas: var(--canvas);
+  --cartograph-auth-raised: var(--raised);
+  --cartograph-auth-line: var(--line);
+  --cartograph-auth-fg: var(--fg);
+}
+
+/* Clerk owns the registration flow; the surrounding form uses our theme. */
+.auth-form .cl-rootBox, .auth-form .cl-cardBox { width: 100%; max-width: 100%; }
+.auth-form .cl-cardBox { box-shadow: none; border: 0; border-radius: 0; background: transparent; overflow: visible; }
+.auth-form .cl-card { width: 100%; max-width: 100%; box-sizing: border-box; margin: 0; background: transparent; box-shadow: none; border: 0; padding: 0; gap: 1.75rem; }
+.auth-form .cl-headerTitle { color: var(--cartograph-auth-fg); font-size: 1.875rem; font-weight: 600; letter-spacing: -.045em; line-height: 1.2; text-align: left; }
+.auth-form .cl-headerSubtitle { color: var(--cartograph-auth-fg-muted); font-size: .8125rem; line-height: 1.7; text-align: left; margin-top: .5rem; }
+.auth-form .cl-socialButtonsBlockButton { min-height: 2.75rem; border: 1px solid var(--cartograph-auth-line); border-radius: .625rem; background: var(--cartograph-auth-surface); box-shadow: none; color: var(--cartograph-auth-fg); }
+.auth-form .cl-socialButtonsBlockButton:hover { background: var(--cartograph-auth-raised); }
+.auth-form .cl-formFieldInput { min-height: 2.75rem; border: 1px solid var(--cartograph-auth-line); border-radius: .625rem; background: var(--cartograph-auth-canvas); color: var(--cartograph-auth-fg); box-shadow: none; }
+.auth-form .cl-formFieldInput:focus { border-color: var(--cartograph-auth-accent); outline: 3px solid color-mix(in srgb, var(--cartograph-auth-accent) 12%, transparent); }
+.auth-form .cl-formFieldLabel { color: var(--cartograph-auth-fg); font-size: .75rem; font-weight: 500; margin-bottom: .35rem; }
+.auth-form .cl-formButtonPrimary { min-height: 2.75rem; background: var(--cartograph-auth-accent); background-image: none; color: var(--cartograph-auth-accent-fg); box-shadow: none; border: 0; border-radius: .625rem; font-size: .8125rem; font-weight: 500; }
+.auth-form .cl-formButtonPrimary:hover { background: var(--cartograph-auth-accent); opacity: .9; }
+.auth-form .cl-formButtonPrimary:disabled { background: var(--cartograph-auth-raised); color: var(--cartograph-auth-fg-muted); opacity: .6; }
+.auth-form .cl-footer { background: transparent; background-image: none; padding: 1.75rem 0 0; }
+.auth-form .cl-footerAction { justify-content: flex-start; }
+.auth-form .cl-footerActionText { color: var(--cartograph-auth-fg-muted); font-size: .75rem; }
+.auth-form .cl-footerActionLink { color: var(--cartograph-auth-accent); font-size: .75rem; }
+.auth-form .cl-dividerLine { background: var(--cartograph-auth-line); }
+.auth-form .cl-dividerText { color: var(--cartograph-auth-fg-muted); }
+.auth-form .cl-formFieldErrorText, .auth-form .cl-alertText { line-height: 1.6; }
+
+.auth-form .cl-formButtonPrimary::after { background: none; }
+
+.auth-form .cl-socialButtonsBlockButton, .auth-form .cl-formFieldInput {
+  border-width: 1px;
+  border-style: solid;
+  border-color: var(--cartograph-auth-line);
+  box-sizing: border-box;
+}
