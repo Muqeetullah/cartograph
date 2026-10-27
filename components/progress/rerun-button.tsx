@@ -7,16 +7,21 @@ export function RerunButton({ analysisId, onStarted, label = "Re-run" }: { analy
   const [pending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
   return (
-    <span className="flex items-center gap-2">
-      {error && <span className="text-xs text-fg-muted">{error}</span>}
+    <span className="flex max-w-full flex-wrap items-center gap-2">
+      {error && <span role="alert" className="max-w-xs break-words text-xs text-fg-muted">{error}</span>}
       <button
         type="button"
         disabled={pending}
         onClick={() =>
           startTransition(async () => {
-            const result = await rerunAnalysis(analysisId);
-            setError(result.error);
-            if (!result.error) onStarted();
+            setError(null);
+            try {
+              const result = await rerunAnalysis(analysisId);
+              setError(result.error);
+              if (!result.error) onStarted();
+            } catch {
+              setError("Couldn’t restart the analysis. Check your connection and try again.");
+            }
           })
         }
         className="h-8 rounded-lg border border-line bg-surface px-3 text-xs font-medium hover:bg-raised disabled:text-fg-muted"
